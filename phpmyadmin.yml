@@ -1,0 +1,27 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: install wordpress and php extension
+      package: name={{ item }} update_cache=yes state=latest
+      loop: [ 'phpmyadmin' , 'php-mbstring' , 'php-zip' , 'php-gd' , 'php-json' , 'php-curl' ]
+    - name: Enable mbstring
+      shell: /usr/sbin/phpenmod mbstring
+      notify: restart apache2
+    - name: create symbolic link
+      file:
+        src: "/etc/phpmyadmin/apache.conf"
+        dest: "/etc/apache2/conf-available/phpmyadmin.conf"
+        state: link 
+    - name: a2enconf phpmyadmin.conf
+      shell: /usr/sbin/a2enconf phpmyadmin.conf
+      notify: reload apache2
+  handlers:
+    - name: restart apache2
+      service:
+        name: apache2
+        state: restarted
+    - name: reload apache2
+      service:
+        name: apache2
+        state: reloaded
