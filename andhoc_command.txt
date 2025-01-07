@@ -4,3 +4,5 @@ ansible all --key-file ~/.ssh/ansible -i inventory<file name that has ip> -m pin
 we can definitly make a ansible .cfg file and add inventory and key file path there so the command of ping will reduce to ansible all -m ping
  ansible all -m apt -a update_cache=true --become --ask-become-pass
 ansible all -m apt -a name=nginx --become --ask-become-pass
+ansible-playbook --list-tags <yml file name>
+ansible-playbook phpmyadmin.yml --ask-become-pass --tags <name of tag>
