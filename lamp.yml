@@ -1,0 +1,33 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: install lamp
+      apt: name={{ item }} update_cache=yes state=latest
+      loop: [ 'apache2', 'mysql-server', 'python3-pymysql', 'php', 'php-mysql', 'libapache2-mod-php' ]
+
+    - name: enable mod_rewrite
+      apache2_module:
+        name: rewrite
+        state: present
+      notify:
+        - restart apache2
+
+    - name: apache2 listen on port 8081
+      lineinfile:
+        dest: /etc/apache2/ports.conf
+        regexp: "^Listen 80"
+        line: "Listen 8081"
+      notify:
+        - restart apache2
+
+    - name: apache2 virtualhost on port 8081
+      replace: dest="/etc/apache2/sites-available/000-default.conf"
+        regexp='^<VirtualHost \*:80>'
+        replace='<VirtualHost \*:8081>'
+      notify:
+        - restart apache2
+    - name: restart apache2
+      service:
+        name: apache2
+        state: restarted

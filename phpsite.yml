@@ -1,0 +1,25 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Set up Apache virtualhost
+      template:
+        src: "lamp.conf"
+        dest: "/etc/apache2/sites-available/lamp.conf"
+      notify: restart apache2
+    - name: Enable new site
+      shell: /usr/sbin/a2ensite lamp.conf
+      notify: reload apache2
+    - name: Disable old site
+      shell: /usr/sbin/a2dissite 000-default.conf
+      notify: reload apache2
+    - name: send info.php to var/www/html
+      template:
+        src: info.php
+        dest: "/var/www/html/info.php"
+  handlers:
+    - name: reload apache2
+      service:
+        name: apache2
+        state: reloaded
+

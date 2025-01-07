@@ -1,0 +1,6 @@
+ansible all -m gather_facts --limit vm1@10.0.1.154
+ansible all --list-hosts
+ansible all --key-file ~/.ssh/ansible -i inventory<file name that has ip> -m ping
+we can definitly make a ansible .cfg file and add inventory and key file path there so the command of ping will reduce to ansible all -m ping
+ ansible all -m apt -a update_cache=true --become --ask-become-pass
+ansible all -m apt -a name=nginx --become --ask-become-pass
