@@ -1,0 +1,23 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: make windows user
+      user:
+        name: windows
+        create_home: yes
+    - name: take ssh key
+      authorized_key:
+        user: windows
+        key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCsIYUws64glw6Teg+rrjNo1RO3BRQ2eFgYjvFk8UF+BDdKZpA0YfMqPGCAAj0GIeJY3xMqFqYkDigMlqRoQOCrW3WnHsgkFWC0+wd/8v/veuJ2YEjdL0TDqGqjUhEo0yqRqTftD1EEfYxtHPxM4+xLxQbrmTeJIWEyxpYjnhfb1tRY4bV4Ikz8GfuFqsEQ82TuVjE+FnqXaShFkzYkagw/bbhEhci/Hiz2EqRJgaqot8eb3GjCa3239Wlxtbl3EPe0vwLSwG5ESVXBj3Y79L5i98Ml9VLlDIM/Y/ndyR7Dqr26I3TkPdyQFzhBvsopGKjydCf1wAdomyZk5ruQD810btTo30EQ1rqaME0N1ANF854JBIKZe3AT2I2hpbgp6PBAexjOWZD+G37vlJGH89MWOJooZez0THpDtuOjVHDGhCRGbxvJ05bIXqryt9qQxp4+tuQt4cYucBaUI3kV6aXPd4a2vKpYSnl8MsmsWMmaQEhyXjh+bCiQQNKuYPrcpkE= ansible"  
+    - name: add sudo privilegs
+      user:
+        name: windows
+        shell: /bin/bash
+        groups: sudo
+        append: yes
+    - name: Add windows user to sudoers file
+      lineinfile:
+        dest: /etc/sudoers
+        line: 'windows ALL=(ALL) NOPASSWD:ALL'
+        state: present
