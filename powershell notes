@@ -1,0 +1,33 @@
+Get-Service, Set-Service, Get-Member -InputObject "<any datatype>" return method associated with datatype ,  ($true).GetType() give the datatype of whatever pass in brackets ,  creating variable is different you can create it by $a="laiba" writing $ is necessary, also we can use Set-variable -Name "<>" -value "" and if we give constant after it we will not be able to change it if not we can change it with -force as well, also there is another way to store cmdlet command in variable for example Get-service -OutVariable <variable name>, uskay ilawa pipeline is basically filtering out output for it we use "|" this sample like Get-Service | Select-Object -last 10,other operator are Where-Object, Group Object <property name> , Mesaure-Object , another very greate is Compare-Object -ReferenceObject $a -DifferenceObject $c -IncludeEqual , where a and b is file content got from $a=get-Content .\first.txt, $_ is used to store intermediate pipeline result ,
+we have group-object in pipeline to group object based on some properties
+in pipeline we also have sort object Get-Service | Sort-Object Status,Name | fw -GroupBy Status , Get-WinEvent -LogName System -MaxEvents 1000 | Group-Object -Property LevelDisplayName
+whatever you write in curly bracket is script block
+function syntax is simple
+function <function name> {
+  params(
+  [Parameter(Mandatory)] #if you want to make some parameter mandatory
+  <$argument1>
+  <$argument2>
+  )
+  <code uou want to execute>
+}
+you can call function simple <function name> -argument1 "<value>" -argument2 "<value>"
+Array syntax is &a=@()
+if you have fixed array size or empoty array you cant use add but can use $arr+="<value>" to add, this is of fixed sized 
+arraylist is of variable size and its syntax is 
+$arr = New-Object -TypeName System.Collections.Objects 
+we can use add command here
+yeh syntax of hastable is sumple $h = @{ <key>=<value> } we can also store cmdlet result as hastable by using -as hashtable flag 
+Measure Object Parameter :
+Operator	Description
+-eq	Equal to
+-ne	Not equal to
+-gt	Greater than
+-lt	Less than
+-le	Less than or equal to
+-ge	Greater than or equal to
+The -in and -contains operators, which test whether an object exists in a collection.
+The -as operator, which tests whether an object is of a specified type.
+The -match and -cmatch operators, which compare a string to a regular expression.
+
+Enumeration : foreach loop Get-ChildItem –Path C:\Encrypted\ -File | ForEach Encrypt
