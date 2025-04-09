@@ -1,0 +1,9 @@
+winrm quickconfig
+winrm s winrm/config/client '@{TrustedHosts="x.x.x.x"}'
+restart-service winrm 
+Test-WSMan -ComputerName "x.x.x.x"
+$username = $env:USR
+$password = ConvertTo-SecureString $env:PW -AsPlainText -Force
+$psCred = New-Object System.Management.Automation.PSCredential -ArgumentList ($username, $password)
+$s = New-PSSession -ComputerName "x.x.x.x" -Credential $psCred
+Invoke-Command -Session $s -ErrorAction Stop -ScriptBlock {Invoke-Expression -Command:"cmd.exe /c 'C:\Users\xyz\downloads\first.bat'"}
